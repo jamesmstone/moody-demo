@@ -1,46 +1,113 @@
-# Getting Started with Create React App
+# react-planner
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+*react-planner* is a [React][react] component which can be used to draw model buildings. Drag & drop from a catalog of customizable and ready-to-use objects, you can start from 2D wireframes and land on 3D models. As a developer you can provide your users with new objects by adding them to the catalog.
 
-## Available Scripts
+[![npm][npm_label]][npm_link]
+![javascript][js]
+![react-version][react_version]
 
-In the project directory, you can run:
+## Demo
 
-### `yarn start`
+[Demo][demo]
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+[![react-planner][preview_image]][demo]
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## Usage
 
-### `yarn test`
+``` es6
+import React from 'react';
+import ReactDOM from 'react-dom';
+import {Map} from 'immutable';
+import {createStore} from 'redux';
+import {Provider} from 'react-redux';
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+//download this demo catalog https://github.com/cvdlab/react-planner/tree/master/demo/src/catalog
+import MyCatalog from './catalog/mycatalog';
 
-### `yarn build`
+import {
+  Models as PlannerModels,
+  reducer as PlannerReducer,
+  ReactPlanner,
+  Plugins as PlannerPlugins,
+} from 'react-planner';
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+//define state
+let AppState = Map({
+  'react-planner': new PlannerModels.State()
+});
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+//define reducer
+let reducer = (state, action) => {
+  state = state || AppState;
+  state = state.update('react-planner', plannerState => PlannerReducer(plannerState, action));
+  return state;
+};
 
-### `yarn eject`
+let store = createStore(reducer, null, window.devToolsExtension ? window.devToolsExtension() : f => f);
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+let plugins = [
+  PlannerPlugins.Keyboard(),
+  PlannerPlugins.Autosave('react-planner_v0'),
+  PlannerPlugins.ConsoleDebugger(),
+];
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+//render
+ReactDOM.render(
+  (
+    <Provider store={store}>
+      <ReactPlanner
+        catalog={MyCatalog}
+        width={800}
+        height={600}
+        plugins={plugins}
+        stateExtractor={state => state.get('react-planner')}
+      />
+    </Provider>
+  ),
+  document.getElementById('app')
+);
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+```
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+## Docs
 
-## Learn More
+- [Create a Property](docs/HOW_TO_CREATE_A_PROPERTY.md)
+- [Create a Catalog](docs/HOW_TO_CREATE_A_CATALOG.md)
+- [Create a Catalog's Element](docs/HOW_TO_CREATE_AN_ELEMENT.md)
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## Authors
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+- [chrvadala](https://github.com/chrvadala)
+- [danilosalvati](https://github.com/danilosalvati)
+- [enricomarino](https://github.com/enricomarino)
+- [federicospini](https://github.com/federicospini)
+- [alessiocarrafa](https://github.com/alessiocarrafa)
+- [stefanoperrone](https://github.com/stefanoperrone)
+
+Developed @ [CVDLAB][cvdlab]
+
+## Contributing
+
+Your contributions (issues and pull request) are very appreciated!
+
+## Contributors
+
+ - [JikkuJose](https://github.com/JikkuJose)
+ - [Yeri-Kim](https://github.com/Yeri-Kim)
+ - [lucacastoro](https://github.com/lucacastoro)
+ - [cbosse-skwirrel](https://github.com/cbosse-skwirrel)
+ - [JaccoGoris](https://github.com/JaccoGoris)
+
+## License
+
+MIT
+
+[react]: https://facebook.github.io/react/
+[npm_label]: https://img.shields.io/npm/v/react-planner.svg?maxAge=2592000?style=plastic
+[npm_link]: https://www.npmjs.com/package/react-planner
+[js]: https://img.shields.io/badge/javascript-ES6-fbde34.svg
+[react_version]: https://img.shields.io/badge/react%20version-16.0.0%20or%20later-61dafb.svg
+[preview_image]: https://raw.githubusercontent.com/cvdlab/react-planner/master/preview.png
+[demo]: https://cvdlab.github.io/react-planner
+[cvdlab]: http://cvdlab.org/
