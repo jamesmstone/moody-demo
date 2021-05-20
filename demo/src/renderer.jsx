@@ -81,14 +81,14 @@ ReactDOM.render(
     <Provider store={store}>
       <ContainerDimensions>
         {({width, height}) =>
-          <ReactPlanner
+          <div><h1 style={{fontSize: "32px"}}>Moody Landscaping</h1><small> Loading...</small><ReactPlanner
             catalog={MyCatalog}
             width={width}
-            height={height}
+            height={height - 32}
             plugins={plugins}
             toolbarButtons={toolbarButtons}
             stateExtractor={state => state.get('react-planner')}
-          />
+          /></div>
         }
       </ContainerDimensions>
     </Provider>
