@@ -81,7 +81,7 @@ ReactDOM.render(
     <Provider store={store}>
       <ContainerDimensions>
         {({width, height}) =>
-          <div><h1 style={{fontSize: "32px"}}>Moody Landscaping</h1><small> Loading...</small><ReactPlanner
+          <div><h1 style={{fontSize: "32px"}}>Moody Landscaping</h1><ReactPlanner
             catalog={MyCatalog}
             width={width}
             height={height - 32}
